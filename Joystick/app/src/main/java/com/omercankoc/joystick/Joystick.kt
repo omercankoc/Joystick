@@ -9,7 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 
-class Joystick { 
+class Joystick {
 
     companion object {
         const val STICK_NONE = 0
@@ -46,16 +46,12 @@ class Joystick {
 
     private var touch_state = false
 
-    fun Joystick(
-        context: Context?,
-        layout: ViewGroup?,
-        stick_res_id: Int
-    ){
+    fun Joystick(context: Context?, layout: ViewGroup?, stick_res_id: Int){
         mContext = context
         stick = BitmapFactory.decodeResource(mContext!!.resources, stick_res_id)
         stick_width = stick!!.getWidth()
         stick_height = stick!!.getHeight()
-        draw = DrawCanvas(mContext)
+        draw = DrawCanvas(mContext!!)
         paint = Paint()
         mLayout = layout
         params = mLayout!!.layoutParams
@@ -260,21 +256,22 @@ class Joystick {
         mLayout!!.addView(draw)
     }
 
-    inner class DrawCanvas constructor(mContext: Context) :
+    private inner class DrawCanvas constructor(mContext: Context) :
         View(mContext) {
         var x = 0.0
         var y = 0.0
 
-        private fun DrawCanvas(mContext : Context){ super(mContext!!) }
+        /*private fun DrawCanvas(mContext : Context){ super(mContext!!) }
 
-        override fun onDraw(canvas: Canvas) {
+        override fun onDraw(canvas : Canvas) {
             canvas.drawBitmap(stick!!, x, y, paint!!)
-        }
+        }*/
 
         fun position(pos_x: Float, pos_y: Float) {
             x = (pos_x - stick_width / 2).toDouble()
             y = (pos_y - stick_height / 2).toDouble()
         }
+
     }
 }
 
