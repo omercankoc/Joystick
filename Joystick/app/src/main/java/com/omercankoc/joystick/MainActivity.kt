@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     var textViewDistance : TextView? = null
     var textViewDirection : TextView? = null
 
-    var joystick : JoystickController? = null
+    var joystick : Joystick? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,22 +33,22 @@ class MainActivity : AppCompatActivity() {
         textViewDistance = findViewById<View>(R.id.textViewDistance) as TextView
         textViewDirection = findViewById<View>(R.id.textViewDirection) as TextView
 
-        joystick = JoystickController(applicationContext,relativeLayoutJoystick,R.drawable.inner)
+        joystick = Joystick(applicationContext, relativeLayoutJoystick!!, R.drawable.inner)
         joystick!!.setStickSize(150,150)
         joystick!!.setLayoutSize(500,500)
-        joystick!!.layoutAlpha = 150
-        joystick!!.stickAlpha = 100
-        joystick!!.offset = 90
-        joystick!!.minimumDistance = 50
+        joystick!!.setLayoutAlpha(150)
+        joystick!!.setStickAlpha(100)
+        joystick!!.setOffset(90)
+        joystick!!.setMinimumDistance(50)
 
         relativeLayoutJoystick!!.setOnTouchListener { arg0, arg1 ->
             joystick!!.drawStick(arg1)
             if (arg1.action == MotionEvent.ACTION_DOWN
                 || arg1.action == MotionEvent.ACTION_MOVE) {
-                textViewXCoordinate!!.text = "X : " + joystick!!.x.toString()
-                textViewYCoordinate!!.text = "Y : " + joystick!!.y.toString()
-                textViewAngle!!.text = "Angle : " + joystick!!.angle.toString()
-                textViewDistance!!.text = "Distance : " + joystick!!.distance.toString()
+                textViewXCoordinate!!.text = "X : " + joystick!!.getX().toString()
+                textViewYCoordinate!!.text = "Y : " + joystick!!.getY().toString()
+                textViewAngle!!.text = "Angle : " + joystick!!.getAngle().toString()
+                textViewDistance!!.text = "Distance : " + joystick!!.getDistance().toString()
                 val direction = joystick!!.get8Direction()
                 if (direction == JoystickController.STICK_UP) {
                     textViewDirection!!.text = "Direction : Up"

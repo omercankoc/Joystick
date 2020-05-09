@@ -10,35 +10,32 @@ import android.view.View
 import android.view.ViewGroup
 
 class Joystick {
-
-    companion object {
-        const val STICK_NONE = 0
-        const val STICK_UP = 1
-        const val STICK_UPRIGHT = 2
-        const val STICK_RIGHT = 3
-        const val STICK_DOWNRIGHT = 4
-        const val STICK_DOWN = 5
-        const val STICK_DOWNLEFT = 6
-        const val STICK_LEFT = 7
-        const val STICK_UPLEFT = 8
-    }
+    val STICK_NONE = 0
+    val STICK_UP = 1
+    val STICK_UPRIGHT = 2
+    val STICK_RIGHT = 3
+    val STICK_DOWNRIGHT = 4
+    val STICK_DOWN = 5
+    val STICK_DOWNLEFT = 6
+    val STICK_LEFT = 7
+    val STICK_UPLEFT = 8
 
     private var STICK_ALPHA = 200
     private var LAYOUT_ALPHA = 200
-    var offset = 0
+    private var OFFSET = 0
 
     private var mContext: Context? = null
     private var mLayout: ViewGroup? = null
     private var params: ViewGroup.LayoutParams? = null
-
     private var stick_width = 0
-    private var stick_height = 0
+    private  var stick_height : Int = 0
+
     private var position_x = 0
     private var position_y = 0
 
-    var minimumDistance = 0
+    private var min_distance = 0
     private var distance = 0f
-    private var angle = 0f
+    private  var angle : Float = 0f
 
     private var draw: DrawCanvas? = null
     private var paint: Paint? = null
@@ -46,16 +43,31 @@ class Joystick {
 
     private var touch_state = false
 
-    fun Joystick(context: Context?, layout: ViewGroup?, stick_res_id: Int){
+    constructor( context: Context?, layout: ViewGroup?, stick_res_id: Int){
         mContext = context
         stick = BitmapFactory.decodeResource(mContext!!.resources, stick_res_id)
         stick_width = stick!!.getWidth()
         stick_height = stick!!.getHeight()
-        draw = DrawCanvas(mContext!!)
+        draw = DrawCanvas(mContext)
         paint = Paint()
         mLayout = layout
         params = mLayout!!.layoutParams
     }
+    /*
+    fun Joystick(
+        context: Context?,
+        layout: ViewGroup?,
+        stick_res_id: Int
+    ) {
+        mContext = context
+        stick = BitmapFactory.decodeResource(mContext!!.resources, stick_res_id)
+        stick_width = stick!!.getWidth()
+        stick_height = stick!!.getHeight()
+        draw = DrawCanvas(mContext)
+        paint = Paint()
+        mLayout = layout
+        params = mLayout!!.layoutParams
+    } */
 
     fun drawStick(arg1: MotionEvent) {
         position_x = (arg1.x - params!!.width / 2).toInt()
@@ -71,16 +83,16 @@ class Joystick {
         ).toFloat()
         angle = cal_angle(position_x.toFloat(), position_y.toFloat()).toFloat()
         if (arg1.action == MotionEvent.ACTION_DOWN) {
-            if (distance <= params!!.width / 2 - offset) {
-                draw!!.position(arg1.x, arg1.y)
+            if (distance <= params!!.width / 2 - OFFSET) {
+                draw!!.position(arg1.x.toDouble(), arg1.y.toDouble())
                 draw()
                 touch_state = true
             }
         } else if (arg1.action == MotionEvent.ACTION_MOVE && touch_state) {
-            if (distance <= params!!.width / 2 - offset) {
-                draw!!.position(arg1.x, arg1.y)
+            if (distance <= params!!.width / 2 - OFFSET) {
+                draw!!.position(arg1.x.toDouble(), arg1.y.toDouble())
                 draw()
-            } else if (distance > params!!.width / 2 - offset) {
+            } else if (distance > params!!.width / 2 - OFFSET) {
                 var x = (Math.cos(
                     Math.toRadians(
                         cal_angle(
@@ -89,7 +101,7 @@ class Joystick {
                         )
                     )
                 )
-                        * (params!!.width / 2 - offset)).toFloat()
+                        * (params!!.width / 2 - OFFSET)).toFloat()
                 var y = (Math.sin(
                     Math.toRadians(
                         cal_angle(
@@ -98,10 +110,10 @@ class Joystick {
                         )
                     )
                 )
-                        * (params!!.height / 2 - offset)).toFloat()
+                        * (params!!.height / 2 - OFFSET)).toFloat()
                 x += (params!!.width / 2).toFloat()
                 y += (params!!.height / 2).toFloat()
-                draw!!.position(x, y)
+                draw!!.position(x.toDouble(), y.toDouble())
                 draw()
             } else {
                 mLayout!!.removeView(draw)
@@ -112,41 +124,62 @@ class Joystick {
         }
     }
 
-    val position: IntArray
-        get() = if (distance > minimumDistance && touch_state) {
-            intArrayOf(position_x, position_y)
-        } else intArrayOf(0, 0)
+    fun getPosition(): IntArray? {
+        if (distance > min_distance && touch_state) {
+            return intArrayOf(position_x, position_y)
+        } else {
+            return intArrayOf(0, 0)
+        }
+    }
 
     //
-    val x: Int
-        get() = if (distance > minimumDistance && touch_state) {
-            position_x
-        } else 0
+    fun getX(): Int {
+        if (distance > min_distance && touch_state) {
+            return position_x
+        } else {
+            return 0
+        }
+    }
 
     //
-    val y: Int
-        get() = if (distance > minimumDistance && touch_state) {
-            position_y
-        } else 0
+    fun getY(): Int {
+        if (distance > min_distance && touch_state) {
+            return position_y
+        } else {
+            return 0
+        }
+    }
 
     //
     fun getAngle(): Float {
-        if (distance > minimumDistance && touch_state) {
+        if (distance > min_distance && touch_state) {
             return angle
+        } else {
+            return 0F
         }
-        else return 0.0F
     }
 
     //
     fun getDistance(): Float {
-        if (distance > minimumDistance && touch_state) {
+        if (distance > min_distance && touch_state) {
             return distance
+        } else {
+            return 0F
         }
-        else  return 0.0F
+    }
+
+    //
+    fun setMinimumDistance(minDistance: Int) {
+        min_distance = minDistance
+    }
+
+    //
+    fun getMinimumDistance(): Int {
+        return min_distance
     }
 
     fun get8Direction(): Int {
-        if (distance > minimumDistance && touch_state) {
+        if (distance > min_distance && touch_state) {
             if (angle >= 247.5 && angle < 292.5) {
                 return STICK_UP
             } else if (angle >= 292.5 && angle < 337.5) {
@@ -164,14 +197,14 @@ class Joystick {
             } else if (angle >= 202.5 && angle < 247.5) {
                 return STICK_UPLEFT
             }
-        } else if (distance <= minimumDistance && touch_state) {
+        } else if (distance <= min_distance && touch_state) {
             return STICK_NONE
         }
         return 0
     }
 
     fun get4Direction(): Int {
-        if (distance > minimumDistance && touch_state) {
+        if (distance > min_distance && touch_state) {
             if (angle >= 225 && angle < 315) {
                 return STICK_UP
             } else if (angle >= 315 || angle < 45) {
@@ -181,25 +214,39 @@ class Joystick {
             } else if (angle >= 135 && angle < 225) {
                 return STICK_LEFT
             }
-        } else if (distance <= minimumDistance && touch_state) {
+        } else if (distance <= min_distance && touch_state) {
             return STICK_NONE
         }
         return 0
     }
 
-    var stickAlpha: Int
-        get() = STICK_ALPHA
-        set(alpha) {
-            STICK_ALPHA = alpha
-            paint!!.alpha = alpha
-        }
+    //
+    fun setOffset(offset: Int) {
+        OFFSET = offset
+    }
 
-    var layoutAlpha: Int
-        get() = LAYOUT_ALPHA
-        set(alpha) {
-            LAYOUT_ALPHA = alpha
-            mLayout!!.background.alpha = alpha
-        }
+    //
+    fun getOffset(): Int {
+        return OFFSET
+    }
+
+    fun setStickAlpha(alpha: Int) {
+        STICK_ALPHA = alpha
+        paint!!.alpha = alpha
+    }
+
+    fun getStickAlpha(): Int {
+        return STICK_ALPHA
+    }
+
+    fun setLayoutAlpha(alpha: Int) {
+        LAYOUT_ALPHA = alpha
+        mLayout!!.background.alpha = alpha
+    }
+
+    fun getLayoutAlpha(): Int {
+        return LAYOUT_ALPHA
+    }
 
     fun setStickSize(width: Int, height: Int) {
         stick = Bitmap.createScaledBitmap(stick!!, width, height, false)
@@ -207,31 +254,36 @@ class Joystick {
         stick_height = stick!!.getHeight()
     }
 
-    var stickWidth: Int
-        get() = stick_width
-        set(width) {
-            stick = Bitmap.createScaledBitmap(stick!!, width, stick_height, false)
-            stick_width = stick!!.getWidth()
-        }
+    fun setStickWidth(width: Int) {
+        stick = Bitmap.createScaledBitmap(stick!!, width, stick_height, false)
+        stick_width = stick!!.getWidth()
+    }
 
-    var stickHeight: Int
-        get() = stick_height
-        set(height) {
-            stick = Bitmap.createScaledBitmap(stick!!, stick_width, height, false)
-            stick_height = stick!!.getHeight()
-        }
+    fun setStickHeight(height: Int) {
+        stick = Bitmap.createScaledBitmap(stick!!, stick_width, height, false)
+        stick_height = stick!!.getHeight()
+    }
+
+    fun getStickWidth(): Int {
+        return stick_width
+    }
+
+    fun getStickHeight(): Int {
+        return stick_height
+    }
 
     fun setLayoutSize(width: Int, height: Int) {
         params!!.width = width
         params!!.height = height
     }
 
-    val layoutWidth: Int
-        get() = params!!.width
+    fun getLayoutWidth(): Int {
+        return params!!.width
+    }
 
-    val layoutHeight: Int
-        get() = params!!.height
-
+    fun getLayoutHeight(): Int {
+        return params!!.height
+    }
 
     private fun cal_angle(x: Float, y: Float): Double {
         if (x >= 0 && y >= 0) {
@@ -240,12 +292,10 @@ class Joystick {
             return Math.toDegrees(Math.atan(y / x.toDouble())) + 180
         } else if (x < 0 && y < 0) {
             return Math.toDegrees(Math.atan(y / x.toDouble())) + 180
-        } else if (x >= 0 && y < 0) {
+        } else if (x >= 0 && y < 0){
             return Math.toDegrees(Math.atan(y / x.toDouble())) + 360
         }
-        else {
-            return 0.0
-        }
+        return 0.0
     }
 
     private fun draw() {
@@ -256,22 +306,17 @@ class Joystick {
         mLayout!!.addView(draw)
     }
 
-    private inner class DrawCanvas constructor(mContext: Context) :
+    inner class DrawCanvas constructor(mContext: Context?) :
         View(mContext) {
-        var x = 0.0
-        var y = 0.0
-
-        /*private fun DrawCanvas(mContext : Context){ super(mContext!!) }
-
-        override fun onDraw(canvas : Canvas) {
-            canvas.drawBitmap(stick!!, x, y, paint!!)
-        }*/
-
-        fun position(pos_x: Float, pos_y: Float) {
-            x = (pos_x - stick_width / 2).toDouble()
-            y = (pos_y - stick_height / 2).toDouble()
+        var x : Double = 0.0
+        var y : Double = 0.0
+        public override fun onDraw(canvas: Canvas) {
+            canvas.drawBitmap(stick!!, x.toFloat(), y.toFloat(), paint)
         }
 
+        fun position(pos_x: Double, pos_y: Double) {
+            x = pos_x - stick_width / 2
+            y = pos_y - stick_height / 2
+        }
     }
 }
-
