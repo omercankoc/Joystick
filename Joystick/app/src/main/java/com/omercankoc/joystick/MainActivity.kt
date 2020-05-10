@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         relativeLayoutJoystick = findViewById<View>(R.id.relativeLayoutJoystick) as RelativeLayout
-
         textViewXCoordinate = findViewById<View>(R.id.textViewXCoordinate) as TextView
         textViewYCoordinate = findViewById<View>(R.id.textViewYCoordinate) as TextView
         textViewAngle = findViewById<View>(R.id.textViewAngle) as TextView
