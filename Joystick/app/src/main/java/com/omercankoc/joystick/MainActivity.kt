@@ -49,23 +49,23 @@ class MainActivity : AppCompatActivity() {
                 textViewAngle!!.text = "Angle : " + joystick!!.getAngle().toString()
                 textViewDistance!!.text = "Distance : " + joystick!!.getDistance().toString()
                 val direction = joystick!!.get8Direction()
-                if (direction == JoystickController.STICK_UP) {
+                if (direction == joystick!!.STICK_UP) {
                     textViewDirection!!.text = "Direction : Up"
-                } else if (direction == JoystickController.STICK_UPRIGHT) {
+                } else if (direction == joystick!!.STICK_UPRIGHT) {
                     textViewDirection!!.text = "Direction : Up Right"
-                } else if (direction == JoystickController.STICK_RIGHT) {
+                } else if (direction == joystick!!.STICK_RIGHT) {
                     textViewDirection!!.text = "Direction : Right"
-                } else if (direction == JoystickController.STICK_DOWNRIGHT) {
+                } else if (direction == joystick!!.STICK_DOWNRIGHT) {
                     textViewDirection!!.text = "Direction : Down Right"
-                } else if (direction == JoystickController.STICK_DOWN) {
+                } else if (direction == joystick!!.STICK_DOWN) {
                     textViewDirection!!.text = "Direction : Down"
-                } else if (direction == JoystickController.STICK_DOWNLEFT) {
+                } else if (direction == joystick!!.STICK_DOWNLEFT) {
                     textViewDirection!!.text = "Direction : Down Left"
-                } else if (direction == JoystickController.STICK_LEFT) {
+                } else if (direction == joystick!!.STICK_LEFT) {
                     textViewDirection!!.text = "Direction : Left"
-                } else if (direction == JoystickController.STICK_UPLEFT) {
+                } else if (direction == joystick!!.STICK_UPLEFT) {
                     textViewDirection!!.text = "Direction : Up Left"
-                } else if (direction == JoystickController.STICK_NONE) {
+                } else if (direction == joystick!!.STICK_NONE) {
                     textViewDirection!!.text = "Direction : Center"
                 }
             } else if (arg1.action == MotionEvent.ACTION_UP) {
