@@ -169,7 +169,8 @@ class Joystick {
         distance = Math.sqrt(Math.pow(position_x.toDouble(),2.0) + Math.pow(position_y.toDouble(), 2.0)).toFloat()
         angle = calculateAngle(position_x.toFloat(), position_y.toFloat()).toFloat()
         if (arg1.action == MotionEvent.ACTION_DOWN) {
-            if (distance <= params!!.width / 2 - OFFSET) { draw!!.position(arg1.x.toDouble(), arg1.y.toDouble())
+            if (distance <= params!!.width / 2 - OFFSET) {
+                draw!!.position(arg1.x.toDouble(), arg1.y.toDouble())
                 draw()
                 touch_state = true
             }

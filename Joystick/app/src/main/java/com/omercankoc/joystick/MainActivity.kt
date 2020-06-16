@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         joystick!!.setLayoutAlpha(150)
         joystick!!.setStickAlpha(100)
         joystick!!.setOffset(90)
-        joystick!!.setMinimumDistance(50)
+        joystick!!.setMinimumDistance(20)
 
         relativeLayoutJoystick!!.setOnTouchListener { arg0, arg1 ->
             joystick!!.drawStick(arg1)
