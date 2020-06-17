@@ -40,10 +40,8 @@ class MainActivity : AppCompatActivity() {
         joystick!!.setOffset(90)
         joystick!!.setMinimumDistance(20)
 
-        relativeLayoutJoystick!!.setOnTouchListener { arg0, arg1 ->
-            joystick!!.drawStick(arg1)
-            if (arg1.action == MotionEvent.ACTION_DOWN
-                || arg1.action == MotionEvent.ACTION_MOVE) {
+        relativeLayoutJoystick!!.setOnTouchListener { arg0, arg1 -> joystick!!.drawStick(arg1)
+            if (arg1.action == MotionEvent.ACTION_DOWN || arg1.action == MotionEvent.ACTION_MOVE) {
                 textViewXCoordinate!!.text = "X : " + joystick!!.getX().toString()
                 textViewYCoordinate!!.text = "Y : " + joystick!!.getY().toString()
                 textViewAngle!!.text = "Angle : " + joystick!!.getAngle().toString()

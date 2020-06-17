@@ -98,7 +98,7 @@ class Joystick {
 
     fun getX(): Int {
         if (distance > min_distance && touch_state) {
-            return position_x
+            return position_x * (1)
         } else {
             return 0
         }
@@ -106,7 +106,7 @@ class Joystick {
 
     fun getY(): Int {
         if (distance > min_distance && touch_state) {
-            return position_y
+            return position_y * (-1)
         } else {
             return 0
         }
@@ -167,7 +167,7 @@ class Joystick {
         position_x = (arg1.x - params!!.width / 2).toInt()
         position_y = (arg1.y - params!!.height / 2).toInt()
         distance = Math.sqrt(Math.pow(position_x.toDouble(),2.0) + Math.pow(position_y.toDouble(), 2.0)).toFloat()
-        angle = calculateAngle(position_x.toFloat(), position_y.toFloat()).toFloat()
+        angle = calculateAngle(position_x.toFloat(), (position_y*(-1)).toFloat()).toFloat()
         if (arg1.action == MotionEvent.ACTION_DOWN) {
             if (distance <= params!!.width / 2 - OFFSET) {
                 draw!!.position(arg1.x.toDouble(), arg1.y.toDouble())
