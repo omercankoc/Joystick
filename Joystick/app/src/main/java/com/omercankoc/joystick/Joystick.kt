@@ -196,21 +196,21 @@ class Joystick {
 
     fun get8Direction(): Int {
         if (distance > min_distance && touch_state) {
-            if (angle >= 247.5 && angle < 292.5) {
+            if (angle >= 67.5 && angle < 112.5) {
                 return STICK_UP
-            } else if (angle >= 292.5 && angle < 337.5) {
+            } else if (angle >= 22.5 && angle < 67.5) {
                 return STICK_UPRIGHT
             } else if (angle >= 337.5 || angle < 22.5) {
                 return STICK_RIGHT
-            } else if (angle >= 22.5 && angle < 67.5) {
+            } else if (angle >= 292.5 && angle < 337.5) {
                 return STICK_DOWNRIGHT
-            } else if (angle >= 67.5 && angle < 112.5) {
+            } else if (angle >= 247.5 && angle < 292.5) {
                 return STICK_DOWN
-            } else if (angle >= 112.5 && angle < 157.5) {
+            } else if (angle >= 202.5 && angle < 247.5) {
                 return STICK_DOWNLEFT
             } else if (angle >= 157.5 && angle < 202.5) {
                 return STICK_LEFT
-            } else if (angle >= 202.5 && angle < 247.5) {
+            } else if (angle >= 112.5 && angle < 157.5) {
                 return STICK_UPLEFT
             }
         } else if (distance <= min_distance && touch_state) {
